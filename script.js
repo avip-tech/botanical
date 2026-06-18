@@ -1,71 +1,79 @@
-// Sample product data
+// Real Middle Eastern perfume products
 const products = [
     {
         id: 1,
-        name: 'Botanical Essence',
-        type: 'Floral',
-        price: '₹3,999',
-        description: 'A delicate blend of fresh florals',
-        emoji: '🌸'
+        name: 'Lataffa Fakhar',
+        brand: 'Lataffa',
+        type: 'Oriental Woody',
+        price: '₹2,499',
+        description: 'Rich oud-based fragrance with spicy notes',
+        emoji: '🌟'
     },
     {
         id: 2,
-        name: 'Midnight Woods',
-        type: 'Woody',
-        price: '₹4,499',
-        description: 'Deep, mysterious woody notes',
-        emoji: '🌲'
+        name: 'Afnan Naseej',
+        brand: 'Afnan',
+        type: 'Woody Floral',
+        price: '₹2,799',
+        description: 'Elegant blend of wood and soft florals',
+        emoji: '💐'
     },
     {
         id: 3,
-        name: 'Citrus Sunrise',
-        type: 'Citrus',
-        price: '₹3,499',
-        description: 'Bright and energizing citrus blend',
-        emoji: '🍊'
+        name: 'Lattafa Qaed Al Fursan',
+        brand: 'Lataffa',
+        type: 'Aromatic Spicy',
+        price: '₹2,299',
+        description: 'Bold spicy and aromatic Middle Eastern blend',
+        emoji: '👑'
     },
     {
         id: 4,
-        name: 'Oriental Dreams',
+        name: 'Afnan Supremacy Not For Women',
+        brand: 'Afnan',
         type: 'Oriental',
-        price: '₹4,999',
-        description: 'Luxurious oriental fragrance',
+        price: '₹2,599',
+        description: 'Luxurious oriental fragrance for men',
         emoji: '✨'
     },
     {
         id: 5,
-        name: 'Fresh Breeze',
-        type: 'Fresh',
+        name: 'Lattafa Bade Al Oud',
+        brand: 'Lataffa',
+        type: 'Pure Oud',
         price: '₹3,299',
-        description: 'Light and airy fresh scent',
-        emoji: '💨'
+        description: 'Premium pure oud with precious wood notes',
+        emoji: '🪵'
     },
     {
         id: 6,
-        name: 'Royal Garden',
-        type: 'Floral',
-        price: '₹5,499',
-        description: 'Premium floral collection',
-        emoji: '🌹'
+        name: 'Afnan Turathi',
+        brand: 'Afnan',
+        type: 'Oriental Oud',
+        price: '₹2,899',
+        description: 'Traditional Arabian fragrance with oud essence',
+        emoji: '🏺'
     }
 ];
 
 // Recommendations based on quiz answers
 const recommendations = {
-    'Oily-Formal-Floral': { product: 1, reason: 'Best for oily skin in formal settings' },
-    'Oily-Casual-Citrus': { product: 3, reason: 'Citrus is perfect for oily skin' },
-    'Dry-Evening-Woody': { product: 2, reason: 'Woody scents work well with dry skin' },
-    'Mixed-Party-Oriental': { product: 4, reason: 'Oriental for special occasions' },
-    'Sensitive-Office-Fresh': { product: 5, reason: 'Fresh scents are gentle on sensitive skin' },
-    'default': { product: 1, reason: 'Our signature blend for you' }
+    'Oily-Formal-Floral': { product: 2, reason: 'Afnan Naseej works beautifully for formal occasions' },
+    'Oily-Casual-Citrus': { product: 3, reason: 'Lataffa Qaed Al Fursan is perfect for casual wear' },
+    'Dry-Evening-Woody': { product: 5, reason: 'Lattafa Bade Al Oud excels on dry skin' },
+    'Mixed-Party-Oriental': { product: 4, reason: 'Afnan Supremacy is ideal for special occasions' },
+    'Sensitive-Office-Fresh': { product: 1, reason: 'Lataffa Fakhar is gentle yet sophisticated' },
+    'default': { product: 6, reason: 'Afnan Turathi is our signature recommendation' }
 };
 
 let quizAnswers = {};
 let currentStep = 1;
+let cart = [];
 
 // Initialize
 window.addEventListener('DOMContentLoaded', () => {
     loadProducts();
+    updateCartCount();
 });
 
 // Load and display products
@@ -75,6 +83,7 @@ function loadProducts() {
         <div class="product-card">
             <div class="product-image">${product.emoji}</div>
             <div class="product-info">
+                <div class="product-brand" style="color: #d4af37; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">${product.brand}</div>
                 <div class="product-name">${product.name}</div>
                 <div class="product-type">${product.type}</div>
                 <div class="product-price">${product.price}</div>
@@ -114,7 +123,8 @@ function showRecommendation() {
 
     const resultDiv = document.getElementById('recommendationResult');
     resultDiv.innerHTML = `
-        <h3 style="color: #d4af37; margin-bottom: 1rem;">${product.emoji} ${product.name}</h3>
+        <h3 style="color: #d4af37; margin-bottom: 0.5rem;">${product.emoji} ${product.name}</h3>
+        <p style="margin: 0.3rem 0; color: #d4af37; font-size: 0.9rem; text-transform: uppercase;"><strong>${product.brand}</strong></p>
         <p style="margin: 0.5rem 0;"><strong>Type:</strong> ${product.type}</p>
         <p style="margin: 0.5rem 0;"><strong>Price:</strong> ${product.price}</p>
         <p style="margin: 0.5rem 0;"><strong>Why:</strong> ${recommendation.reason}</p>
@@ -137,18 +147,39 @@ function resetQuiz() {
 }
 
 // Shopping cart functionality
-let cart = [];
-
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
     cart.push(product);
     updateCartCount();
-    alert(`${product.name} added to cart!`);
+    alert(`✨ ${product.name} added to cart!`);
 }
 
 function updateCartCount() {
     const cartBtn = document.querySelector('.btn-cart');
     cartBtn.textContent = `🛒 Cart (${cart.length})`;
+}
+
+function viewCart() {
+    if (cart.length === 0) {
+        alert('Your cart is empty! Add some perfumes to get started.');
+        return;
+    }
+
+    let cartContent = '🛒 YOUR CART\n' + '='.repeat(50) + '\n\n';
+    let totalPrice = 0;
+
+    cart.forEach((item, index) => {
+        const priceValue = parseInt(item.price.replace('₹', '').replace(',', ''));
+        totalPrice += priceValue;
+        cartContent += `${index + 1}. ${item.name}\n   Brand: ${item.brand}\n   Price: ${item.price}\n\n`;
+    });
+
+    cartContent += '='.repeat(50) + '\n';
+    cartContent += `Total Items: ${cart.length}\n`;
+    cartContent += `Estimated Total: ₹${totalPrice.toLocaleString()}\n\n`;
+    cartContent += '💳 Proceed to checkout when ready!';
+
+    alert(cartContent);
 }
 
 // Login functionality
@@ -159,7 +190,7 @@ function toggleLoginModal() {
 
 function handleLogin(event) {
     event.preventDefault();
-    alert('Login functionality will be implemented with backend');
+    alert('✅ Login functionality coming soon!\n\nWe\'re building a complete backend system for user accounts, order history, and secure checkout.');
     toggleLoginModal();
 }
 
